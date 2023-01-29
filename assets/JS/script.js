@@ -31,8 +31,6 @@ $(function () {
   // ```
   
   // ## Acceptance Criteria
-  
-  // ```md
   // GIVEN I am using a daily planner to create a schedule
   
   // WHEN I open the planner
@@ -69,3 +67,41 @@ $(function () {
   // THEN the saved events persist
     // LocalStorage
   // ```
+
+  var todaysDate = dayjs();
+  $('#currentDay').text(todaysDate.format('MMM D, YYYY'));
+  console.log(todaysDate);
+
+
+  var currentHour = dayjs().hour();
+  console.log(currentHour);
+  
+
+  for (let index = 9; index < 18; index++) {
+    var hour = $('#hour-' + index)
+    console.log(hour);
+
+    if (index < currentHour) {
+      hour.addClass('past')
+    }
+    if (index == currentHour){
+      hour.addClass('present')
+    }
+    if (index > currentHour) {
+      hour.addClass('future')
+    }
+    
+    var textArea = localStorage.getItem('hour-' + index);
+    console.log(textArea);
+    hour.children('textarea').val(textArea); 
+}
+
+var saveBtn = $('.btn');
+
+function save () {
+  var textArea = $(this).siblings('textarea');
+  var timeBlock = $(this).parent().attr('id');
+  localStorage.setItem(timeBlock, textArea.val())
+}
+
+saveBtn.on('click', save);
